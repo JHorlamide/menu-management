@@ -9,7 +9,7 @@ class Menu(models.Model):
 
 class MenuItem(models.Model):
     name = models.CharField(max_length=100)
-    menu = models.ForeignKey(Menu, related_name="items", on_delete=models.CASCADE)
+    menu = models.ForeignKey(Menu, related_name="children", on_delete=models.CASCADE)
     parent = models.ForeignKey(
         "self", related_name="children", on_delete=models.CASCADE, null=True, blank=True
     )

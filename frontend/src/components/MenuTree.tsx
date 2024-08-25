@@ -1,21 +1,23 @@
 import { SimpleTreeView, TreeItem, treeItemClasses } from '@mui/x-tree-view';
 import { styled, alpha } from '@mui/material/styles';
-import { ReactNode } from 'react';
+import { Box, Button, Grid } from '@mui/material';
 
-interface TreeNode {
-  id: string;
-  name: string;
-  children?: TreeNode[];
+type MenuChildrenType = {
+  id: number,
+  name: string,
+  parent: null,
+  menu: number,
+  children: MenuChildrenType[];
 }
 
-interface TreeItemProps {
-  label: string;
-  id: string;
-  children?: ReactNode;
+type TreeNode = {
+  id: number;
+  name: string;
+  children: MenuChildrenType[];
 }
 
 interface SimpleTreeViewProps {
-  data: TreeNode[];
+  menus: TreeNode | undefined;
 }
 
 const CustomTreeItem = styled(TreeItem)(({ theme }) => ({
@@ -50,32 +52,67 @@ const CustomTreeItem = styled(TreeItem)(({ theme }) => ({
   }),
 }));
 
-const TreeItemI: React.FC<TreeItemProps> = ({ id, label, children }) => {
-  return (
-    <>
-      {children ? (
-        <CustomTreeItem itemId={id} label={label}>
-          {children}
-        </CustomTreeItem>
-      ) : (
-        <CustomTreeItem itemId={id} label={label} />
-      )}
-    </>
-  );
-};
+const renderTree = (nodes: TreeNode) => (
+  <CustomTreeItem key={nodes.id} itemId={nodes.id.toString()} label={nodes.name}>
+    {Array.isArray(nodes.children)
+      ? nodes.children.map((node) => renderTree(node))
+      : null}
+  </CustomTreeItem>
+);
 
-const TreeView: React.FC<SimpleTreeViewProps> = ({ data }) => {
-  const renderTree = (nodes: TreeNode): ReactNode => (
-    <TreeItemI id={nodes.id} label={nodes.name} key={nodes.id}>
-      {nodes.children && nodes.children.map((node) => renderTree(node))}
-    </TreeItemI>
-  );
+const MenuTree: React.FC<SimpleTreeViewProps> = ({ menus }) => {
+  const selected_menus = menus ? [menus] : [];
 
   return (
-    <SimpleTreeView defaultExpandedItems={['grid']}>
-      {data.map((tree) => renderTree(tree))}
-    </SimpleTreeView>
+    <Grid container spacing={2}>
+      <Grid item xs={8}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+          <Box sx={{ display: "flex", gap: 1 }}>
+            <Button sx={{
+              backgroundColor: "#1D2939",
+              borderRadius: "48px",
+              '&:hover': {
+                backgroundColor: '#1D2939',
+                boxShadow: 'none',
+              }
+            }}
+              variant="contained"
+            >
+              Expand All
+            </Button>
+
+            <Button sx={{
+              borderRadius: "48px",
+              outlineColor: "white",
+              backgroundColor: "white",
+              color: "black",
+              '&:hover': {
+                backgroundColor: 'white',
+                boxShadow: 'none',
+              }
+            }}
+              variant="contained"
+            >
+              Collapse All
+            </Button>
+          </Box>
+
+          {selected_menus ? (
+            <SimpleTreeView defaultExpandedItems={['1', '3']}>
+              {selected_menus.map((tree) => renderTree(tree))}
+            </SimpleTreeView>
+          ) : (
+            <h4>No Menu selected</h4>
+          )}
+        </Box>
+      </Grid>
+      <Grid item xs={4}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+
+        </Box>
+      </Grid>
+    </Grid>
   );
 }
 
-export default TreeView
+export default MenuTree

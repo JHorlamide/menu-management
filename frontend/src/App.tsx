@@ -1,5 +1,19 @@
-import Sidebar from './components/Sidebar';
-import TreeView from './components/MenuTree';
+import Sidebar from './components/Layout';
+import Menus from './pages/Menus';
+
+type MenuChildrenType = {
+  id: number,
+  name: string,
+  parent: null,
+  menu: number,
+  children: MenuChildrenType[]
+}
+
+type MenuType = {
+  id: number;
+  name: string;
+  children: MenuChildrenType[]
+}
 
 const App = () => {
   const menuData = [
@@ -72,11 +86,11 @@ const App = () => {
   ];
 
   return (
-    <TreeView data={menuData} />
-    // <div className="app">
-    //   <Sidebar />
-      
-    // </div>
+    <div className="app">
+      <Sidebar>
+        <Menus data={menuData} />
+      </Sidebar>
+    </div>
   );
 };
 

@@ -1,48 +1,38 @@
-import React from 'react';
-import { TextField, Button } from '@mui/material';
+import { FormControl } from '@mui/material';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
 
-const MenuDetails = ({ selectedMenu, handleSave }) => {
-  const [menuData, setMenuData] = React.useState(selectedMenu);
+interface MenuDetailsProps {
+  menuId: string;
+  depth: string;
+  parentData: string;
+  name: string;
+}
 
-  const handleChange = (e) => {
-    setMenuData({ ...menuData, [e.target.name]: e.target.value });
-  };
-
+export default function MenuDetails() {
   return (
-    <div className="menu-details">
-      <TextField
-        label="Menu ID"
-        value={menuData.id}
-        name="id"
-        fullWidth
-        disabled
-      />
-      <TextField
-        label="Depth"
-        value={menuData.depth}
-        name="depth"
-        fullWidth
-        disabled
-      />
-      <TextField
-        label="Parent Data"
-        value={menuData.parent}
-        name="parent"
-        fullWidth
-        disabled
-      />
-      <TextField
-        label="Name"
-        value={menuData.name}
-        name="name"
-        onChange={handleChange}
-        fullWidth
-      />
-      <Button variant="contained" color="primary" onClick={() => handleSave(menuData)}>
-        Save
-      </Button>
-    </div>
+    <Box
+      component="form"
+      sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' } }}
+      noValidate
+      autoComplete="off"
+    >
+      <FormControl>
+        <TextField
+          required
+          id="filled-required"
+          label="Required"
+          defaultValue="Hello World"
+          variant="filled"
+        />
+        <TextField
+          disabled
+          id="filled-disabled"
+          label="Disabled"
+          defaultValue="Hello World"
+          variant="filled"
+        />
+      </FormControl>
+    </Box>
   );
-};
-
-export default MenuDetails;
+}

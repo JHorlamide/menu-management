@@ -16,13 +16,13 @@ class MenuItemSerializer(serializers.ModelSerializer):
 
 
 class MenuSerializer(serializers.ModelSerializer):
-    items = serializers.SerializerMethodField()
+    children = serializers.SerializerMethodField()
 
     class Meta:
         model = Menu
-        fields = ["id", "name", "items"]
+        fields = ["id", "name", "children"]
 
-    def get_items(self, obj):
+    def get_children(self, obj):
         # Only include top-level items (those with parent=None)
         top_level_items = MenuItem.objects.filter(menu=obj, parent__isnull=True)
         return MenuItemSerializer(top_level_items, many=True).data
