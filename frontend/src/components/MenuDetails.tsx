@@ -1,4 +1,4 @@
-import { FormControl } from '@mui/material';
+import { Button, FormControl } from '@mui/material';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
@@ -13,7 +13,7 @@ export default function MenuDetails() {
   return (
     <Box
       component="form"
-      sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' } }}
+      sx={{ '& .MuiTextField-root': { m: 1, width: '20rem' } }}
       noValidate
       autoComplete="off"
     >
@@ -22,16 +22,32 @@ export default function MenuDetails() {
           required
           id="filled-required"
           label="Required"
-          defaultValue="Hello World"
           variant="filled"
+          sx={{ borderRadius: "16px" }}
         />
         <TextField
           disabled
           id="filled-disabled"
           label="Disabled"
-          defaultValue="Hello World"
           variant="filled"
+          sx={{ borderRadius: "16px" }}
         />
+
+        <Button
+          sx={{
+            mt: 2,
+            backgroundColor: "#253BFF",
+            borderRadius: "48px",
+            width: "100%",
+            '&:hover': {
+              backgroundColor: '#253BFF',
+              boxShadow: 'none',
+            }
+          }}
+          variant="contained"
+        >
+          Save
+        </Button>
       </FormControl>
     </Box>
   );

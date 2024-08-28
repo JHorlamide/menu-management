@@ -1,6 +1,8 @@
 import { SimpleTreeView, TreeItem, treeItemClasses } from '@mui/x-tree-view';
 import { styled, alpha } from '@mui/material/styles';
-import { Box, Button, Grid } from '@mui/material';
+import { Box, Button, Grid, IconButton } from '@mui/material';
+import AddIcon from "@mui/icons-material/Add"
+import MenuDetails from './MenuDetails';
 
 type MenuChildrenType = {
   id: number,
@@ -50,10 +52,39 @@ const CustomTreeItem = styled(TreeItem)(({ theme }) => ({
   ...theme.applyStyles('light', {
     color: theme.palette.grey[800],
   }),
+
+  // Hide the IconButton by default
+  [`& .${treeItemClasses.content}:hover .plus-icon`]: {
+    visibility: 'visible',
+  },
+  [`& .plus-icon`]: {
+    visibility: 'hidden',
+    position: 'relative',
+  },
 }));
 
+const handlePlusClick = (node: TreeNode) => {
+  console.log("NODE: ", node);
+};
+
 const renderTree = (nodes: TreeNode) => (
-  <CustomTreeItem key={nodes.id} itemId={nodes.id.toString()} label={nodes.name}>
+  <CustomTreeItem
+    key={nodes.id}
+    itemId={nodes.id.toString()}
+    label={
+      <>
+        {nodes.name}
+        <IconButton
+          className="plus-icon"
+          aria-label="add"
+          size="small"
+          onClick={() => handlePlusClick(nodes)}
+        >
+          <AddIcon fontSize="small" sx={{ bgcolor: "#253BFF", color: "white", borderRadius: 10 }} />
+        </IconButton>
+      </>
+    }
+  >
     {Array.isArray(nodes.children)
       ? nodes.children.map((node) => renderTree(node))
       : null}
@@ -107,9 +138,7 @@ const MenuTree: React.FC<SimpleTreeViewProps> = ({ menus }) => {
         </Box>
       </Grid>
       <Grid item xs={4}>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-
-        </Box>
+        <MenuDetails />
       </Grid>
     </Grid>
   );

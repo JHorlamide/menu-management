@@ -6,13 +6,18 @@ interface CreateMenu {
   name: string;
 }
 
-interface CreateMenuItem {
+interface CreateMenuRes {
+  id: number;
+  name: string;
+  children: Array<any>;
+}
+interface CreateNestedItem {
   name: string;
   parent: string | null;
   menu: string
 }
 
 export const getMenus = () => axios.get(`${API_URL}/menus/`);
-export const createMenu = (data: CreateMenu) => axios.post(`${API_URL}/menus/`, data);
+export const createMenu = (data: CreateMenu) => axios.post<CreateMenuRes>(`${API_URL}/menus/`, data);
 export const updateMenu = (id: string, data: any) => axios.put(`${API_URL}/menus/${id}/`, data);
-export const deleteMenuItem = (id: string) => axios.delete(`${API_URL}/menu-items/${id}/`);
+export const createNestedChild = (data: CreateNestedItem) => axios.post(`${API_URL}/menu-items/`, data);
