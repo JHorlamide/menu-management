@@ -13,8 +13,8 @@ interface CreateMenuRes {
 }
 interface CreateNestedItem {
   name: string;
-  parent: string | null;
-  menu: string
+  parent: number | null;
+  menu: number
 }
 
 export const getMenus = () => axios.get(`${API_URL}/menus/`);

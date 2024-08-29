@@ -1,15 +1,29 @@
 import { Button, FormControl } from '@mui/material';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import React from 'react';
 
 interface MenuDetailsProps {
-  menuId: string;
-  depth: string;
+  menuId: number;
+  depth: number;
   parentData: string;
   name: string;
 }
 
-export default function MenuDetails() {
+export default function MenuDetails(props: MenuDetailsProps) {
+  const [menuInfo, setMenuInfo] = React.useState<MenuDetailsProps>({
+    ...props
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setMenuInfo((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  }
+
   return (
     <Box
       component="form"
@@ -20,20 +34,46 @@ export default function MenuDetails() {
       <FormControl>
         <TextField
           required
-          id="filled-required"
-          label="Required"
+          id="menuId"
+          name='menuId'
+          label="MenuID"
           variant="filled"
+          value={menuInfo.menuId}
           sx={{ borderRadius: "16px" }}
+          onChange={handleChange}
         />
         <TextField
-          disabled
-          id="filled-disabled"
-          label="Disabled"
+          id="depth"
+          name="depth"
+          label="Depth"
           variant="filled"
+          value={menuInfo.depth}
           sx={{ borderRadius: "16px" }}
+          onChange={handleChange}
         />
+        {menuInfo.parentData ? (
+          <TextField
+            id="parentData"
+            name="parentData"
+            label="ParentData"
+            variant="filled"
+            value={menuInfo.parentData}
+            sx={{ borderRadius: "16px" }}
+            onChange={handleChange}
+          />
+        ) : null}
 
+        <TextField
+          id="name"
+          name="name"
+          label="Name"
+          variant="filled"
+          value={menuInfo.name}
+          sx={{ borderRadius: "16px" }}
+          onChange={handleChange}
+        />
         <Button
+          type='submit'
           sx={{
             mt: 2,
             backgroundColor: "#253BFF",
